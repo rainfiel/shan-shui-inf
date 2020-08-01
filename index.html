@@ -489,6 +489,7 @@
     var fil = args.fil != undefined ? args.fil : "rgba(0,0,0,0)";
     var str = args.str != undefined ? args.str : fil;
     var wid = args.wid != undefined ? args.wid : 0;
+    var tag = args.tag != undefined ? args.tag : "poly";
 
     var canv = "<polyline points='";
     for (var i = 0; i < plist.length; i++) {
@@ -505,7 +506,10 @@
       str +
       ";stroke-width:" +
       wid +
+      ";tag:"+
+      tag +
       "'/>";
+
     return canv;
   }
 </script>
@@ -570,7 +574,7 @@
       vtxlist.map(function(x) {
         return [x[0] + xof, x[1] + yof];
       }),
-      { fil: col, str: col, wid: out },
+      { fil: col, str: col, wid: out, tag:"stroke" },
     );
     return canv;
   }
@@ -618,7 +622,7 @@
     }
 
     if (ret == 0) {
-      return poly(plist, { fil: col, str: col, wid: 0 });
+      return poly(plist, { fil: col, str: col, wid: 0, tag:"blob" });
     } else {
       return plist;
     }
@@ -796,8 +800,8 @@
         line2.push([nx + (nslist[i][1] - 0.5) * wid + wid / 2, ny]);
       }
       canv +=
-        poly(line1, { fil: "none", str: col, wid: 1.5 }) +
-        poly(line2, { fil: "none", str: col, wid: 1.5 });
+        poly(line1, { fil: "none", str: col, wid: 1.5, tag: "tree01" }) +
+        poly(line2, { fil: "none", str: col, wid: 1.5, tag: "tree01" });
       return canv;
     };
     this.tree02 = function(x, y, args) {
@@ -911,7 +915,7 @@
         ]);
       }
       var lc = line1.concat(line2.reverse());
-      canv += poly(lc, { fil: "white", str: col, wid: 1.5 });
+      canv += poly(lc, { fil: "white", str: col, wid: 1.5, tag:"tree03" });
       canv += blobs;
       return canv;
     };
@@ -1251,7 +1255,7 @@
           trmlist.push(trlist[i]);
         }
       }
-      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0 });
+      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree04" });
 
       trmlist.splice(0, 1);
       trmlist.splice(trmlist.length - 1, 1);
@@ -1346,7 +1350,7 @@
         }
       }
 
-      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0 });
+      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree05" });
 
       trmlist.splice(0, 1);
       trmlist.splice(trmlist.length - 1, 1);
@@ -1462,7 +1466,7 @@
         ben: 0,
       });
 
-      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0 });
+      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree06" });
 
       trmlist.splice(0, 1);
       trmlist.splice(trmlist.length - 1, 1);
@@ -1574,7 +1578,7 @@
         var m = PolyTools.midPt(T[k]);
         var c = (Noise.noise(m[0] * 0.02, m[1] * 0.02) * 200 + 50) | 0;
         var co = "rgba(" + c + "," + c + "," + c + ",0.8)";
-        canv += poly(T[k], { fil: co, str: co, wid: 0 });
+        canv += poly(T[k], { fil: co, str: co, wid: 0, tag:"tree07" });
       }
       return canv;
     };
@@ -1699,7 +1703,7 @@
         }
       }
 
-      canv += poly(trlist, { xof: x, yof: y, fil: "white", str: col, wid: 0 });
+      canv += poly(trlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree08" });
 
       canv += stroke(
         trlist.map(function(v) {
@@ -1782,6 +1786,7 @@
           yof: yof,
           fil: "white",
           str: "none",
+          tag: "mount.foot"
         });
       }
       for (var j = 0; j < ftlist.length; j++) {
@@ -1878,6 +1883,7 @@
         yof: yoff,
         fil: "white",
         str: "none",
+        tag: "mountain"
       });
       //OUTLINE
       canv += stroke(
@@ -2130,6 +2136,7 @@
         yof: yoff,
         fil: "white",
         str: "none",
+        tag: "flatMount"
       });
       //OUTLINE
       canv += stroke(
@@ -2198,6 +2205,7 @@
         str: "none",
         fil: "white",
         wid: 2,
+        tag: "flatMount"
       });
       canv += stroke(grlist.map(x => [x[0] + xoff, x[1] + yoff]), {
         wid: 3,
@@ -2414,6 +2422,7 @@
           fil: getCol(...ptlist[i][ptlist[i].length - 1]),
           str: "none",
           wid: 1,
+          tag: "distMount"
         });
 
         var T = PolyTools.triangulate(ptlist[i], {
@@ -2424,7 +2433,7 @@
         for (var k = 0; k < T.length; k++) {
           var m = PolyTools.midPt(T[k]);
           var co = getCol(m[0], m[1]);
-          canv += poly(T[k], { fil: co, str: co, wid: 1 });
+          canv += poly(T[k], { fil: co, str: co, wid: 1, tag:"distMount" });
         }
       }
       return canv;
@@ -2487,6 +2496,7 @@
         yof: yoff,
         fil: "white",
         str: "none",
+        tag: "rock"
       });
       //OUTLINE
       canv += stroke(
@@ -2563,7 +2573,7 @@
         ptlist[0]
           .slice(0, -1)
           .concat(ptlist[ptlist.length - 1].slice(0, -1).reverse()),
-        { xof: xoff, yof: yoff, fil: "white", str: "none" },
+        { xof: xoff, yof: yoff, fil: "white", str: "none", tag:"arch.hut.0" },
       );
       canv += poly(ptlist[0], {
         xof: xoff,
@@ -2571,6 +2581,7 @@
         fil: "none",
         str: "rgba(100,100,100,0.3)",
         wid: 2,
+        tag:"arch.hut.1"
       });
       canv += poly(ptlist[ptlist.length - 1], {
         xof: xoff,
@@ -2578,6 +2589,7 @@
         fil: "none",
         str: "rgba(100,100,100,0.3)",
         wid: 2,
+        tag:"arch.hut.2"
       });
 
       canv += texture(ptlist, {
@@ -2665,6 +2677,7 @@
           yof: yoff,
           str: "none",
           fil: "white",
+          tag:"arch.box"
         });
       }
 
@@ -2815,6 +2828,7 @@
             fil: "none",
             str: "rgba(100,100,100,0.5)",
             wid: 2,
+            tag:"arch.rail"
           });
         }
       }
@@ -2908,7 +2922,7 @@
         [wid * 0.5, 0],
         [mid, per],
       ]);
-      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white" });
+      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white", tag:"arch.roof" });
 
       for (var i = 0; i < ptlist.length; i++) {
         canv += stroke(
@@ -2979,7 +2993,7 @@
         polist.push([fxx, fy]);
       }
 
-      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white" });
+      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white", tag: "pagroof" });
       for (var i = 0; i < ptlist.length; i++) {
         canv += stroke(
           div(ptlist[i], 5).map(function(x) {
@@ -3235,7 +3249,7 @@
         plist2.push([i * dir, fun2(i / len)]);
       }
       var plist = plist1.concat(plist2.reverse());
-      canv += poly(plist, { xof: xoff, yof: yoff, fil: "white" });
+      canv += poly(plist, { xof: xoff, yof: yoff, fil: "white", tag:"boat01" });
       canv += stroke(plist.map(v => [xoff + v[0], yoff + v[1]]), {
         wid: 1,
         fun: function(x) {
@@ -3429,7 +3443,7 @@
             [-0.65, 0.5],
           ]),
         ),
-        { fil: "rgba(100,100,100,0.8)" },
+        { fil: "rgba(100,100,100,0.8)", tag:"hat01" },
       );
 
       var qlist1 = [];
@@ -3442,6 +3456,7 @@
       canv += poly(tranpoly(p0, p1, f(qlist1)), {
         str: "rgba(100,100,100,0.8)",
         wid: 1,
+        tag: "hat01"
       });
 
       return canv;
@@ -3479,7 +3494,7 @@
             [0.3, 0.5],
           ]),
         ),
-        { fil: "rgba(100,100,100,0.8)" },
+        { fil: "rgba(100,100,100,0.8)", tag:"hat02" },
       );
       return canv;
     };
@@ -3507,6 +3522,7 @@
       canv += poly(tranpoly(p0, p1, f(qlist1)), {
         str: "rgba(100,100,100,0.5)",
         wid: 1,
+        tag: "stick01"
       });
 
       return canv;
@@ -3610,6 +3626,7 @@
         var [tlist1, tlist2] = expand(tlist, fun);
         canv += poly(tlist1.concat(tlist2.reverse()).map(toGlobal), {
           fil: "white",
+          tag: "man"
         });
         canv += stroke(tlist1.map(toGlobal), {
           wid: 1,
@@ -3656,6 +3673,7 @@
       hlist2.splice(0, Math.floor(hlist2.length * 0.95));
       canv += poly(hlist1.concat(hlist2.reverse()).map(toGlobal), {
         fil: "rgba(100,100,100,0.6)",
+        tag: "man.cloth"
       });
 
       canv += hat(toGlobal(pts[1]), toGlobal(pts[2]), { fli: fli });
@@ -4332,7 +4350,7 @@
     </tr>
   </table>
 </body>
-
+<!-- 
 <canvas id="bgcanv" width="512" height="512" hidden> </canvas>
 <script>
   var canvas = document.getElementById("bgcanv");
@@ -4359,3 +4377,4 @@
   document.getElementsByTagName("body")[0].style.backgroundImage =
     "url(" + img + ")";
 </script>
+ -->
