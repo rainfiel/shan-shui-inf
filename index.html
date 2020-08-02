@@ -4116,7 +4116,13 @@
         xmin - MEM.cwid < MEM.chunks[i].x &&
         MEM.chunks[i].x < xmax + MEM.cwid
       ) {
-        var canv = "<g id='" + i + "' transform='translate(0,0)'>"
+        var canv = "<g id='" +
+        i + 
+        "' x='" +
+        MEM.chunks[i].x +
+        "' y='" +
+        MEM.chunks[i].y +
+        "' transform='translate(0,0)'>"
         + MEM.chunks[i].canv
         + "</g>";
         MEM.canv += canv;
