@@ -525,6 +525,7 @@
     var col = args.col != undefined ? args.col : "rgba(200,200,200,0.9)";
     var noi = args.noi != undefined ? args.noi : 0.5;
     var out = args.out != undefined ? args.out : 1;
+    var tag = args.tag != undefined ? args.tag : "stroke";
     var fun =
       args.fun != undefined
         ? args.fun
@@ -574,7 +575,7 @@
       vtxlist.map(function(x) {
         return [x[0] + xof, x[1] + yof];
       }),
-      { fil: col, str: col, wid: out, tag:"stroke" },
+      { fil: col, str: col, wid: out, tag:tag },
     );
     return canv;
   }
@@ -587,6 +588,7 @@
     var col = args.col != undefined ? args.col : "rgba(200,200,200,0.9)";
     var noi = args.noi != undefined ? args.noi : 0.5;
     var ret = args.ret != undefined ? args.ret : 0;
+    var tag = args.tag != undefined ? args.tag : "blob";
     var fun =
       args.fun != undefined
         ? args.fun
@@ -622,7 +624,7 @@
     }
 
     if (ret == 0) {
-      return poly(plist, { fil: col, str: col, wid: 0, tag:"blob" });
+      return poly(plist, { fil: col, str: col, wid: 0, tag:tag });
     } else {
       return plist;
     }
@@ -663,6 +665,7 @@
     var len = args.len != undefined ? args.len : 0.2;
     var sha = args.sha != undefined ? args.sha : 0;
     var ret = args.ret != undefined ? args.ret : 0;
+    var tag = args.tag != undefined ? args.tag : "texture";
     var noi =
       args.noi != undefined
         ? args.noi
@@ -728,7 +731,7 @@
           texlist[j].map(function(x) {
             return [x[0] + xof, x[1] + yof];
           }),
-          { col: "rgba(100,100,100,0.1)", wid: sha },
+          { col: "rgba(100,100,100,0.1)", wid: sha, tag: tag },
         );
       }
     }
@@ -738,7 +741,7 @@
         texlist[j].map(function(x) {
           return [x[0] + xof, x[1] + yof];
         }),
-        { col: col(j / texlist.length), wid: wid },
+        { col: col(j / texlist.length), wid: wid, tag:tag },
       );
     }
     return ret ? texlist : canv;
@@ -751,6 +754,7 @@
       var wid = args.wid != undefined ? args.wid : 3;
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree01";
 
       reso = 10;
       var nslist = [];
@@ -800,8 +804,8 @@
         line2.push([nx + (nslist[i][1] - 0.5) * wid + wid / 2, ny]);
       }
       canv +=
-        poly(line1, { fil: "none", str: col, wid: 1.5, tag: "tree01" }) +
-        poly(line2, { fil: "none", str: col, wid: 1.5, tag: "tree01" });
+        poly(line1, { fil: "none", str: col, wid: 1.5, tag: tag }) +
+        poly(line2, { fil: "none", str: col, wid: 1.5, tag: tag });
       return canv;
     };
     this.tree02 = function(x, y, args) {
@@ -811,6 +815,7 @@
       var clu = args.clu != undefined ? args.clu : 5;
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree02";
 
       var leafcol;
       if (col.includes("rgba(")) {
@@ -838,6 +843,7 @@
             wid: Math.random() * wid * 0.75 + wid * 0.5,
             len: Math.random() * hei * 0.75 + hei * 0.5,
             col: col,
+            tag: tag
           },
         );
       }
@@ -855,6 +861,7 @@
             };
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree03";
 
       reso = 10;
       var nslist = [];
@@ -901,6 +908,7 @@
                   "," +
                   (Math.random() * 0.2 + parseFloat(leafcol[3])).toFixed(3) +
                   ")",
+                tag:tag
               },
             );
           }
@@ -915,7 +923,7 @@
         ]);
       }
       var lc = line1.concat(line2.reverse());
-      canv += poly(lc, { fil: "white", str: col, wid: 1.5, tag:"tree03" });
+      canv += poly(lc, { fil: "white", str: col, wid: 1.5, tag:tag });
       canv += blobs;
       return canv;
     };
@@ -999,6 +1007,7 @@
       var wid = args.wid != undefined ? args.wid : 1;
       var ang = args.ang != undefined ? args.ang : 0;
       var lea = args.lea != undefined ? args.lea : [true, 12];
+      var tag = args.tag != undefined ? args.tag : "twig"
 
       var canv = "";
       var twlist = [];
@@ -1061,12 +1070,13 @@
           return Math.cos((x * Math.PI) / 2);
         },
         col: "rgba(100,100,100,0.5)",
+        tag: tag
       });
       return canv;
     };
 
-    var barkify = function(x, y, trlist) {
-      function bark(x, y, wid, ang) {
+    var barkify = function(x, y, trlist, tag) {
+      function bark(x, y, wid, ang, tag) {
         var len = 10 + 10 * Math.random();
         var noi = 0.5;
         var fun = function(x) {
@@ -1109,6 +1119,7 @@
           fun: function(x) {
             return Math.sin((x + fr) * Math.PI * 3);
           },
+          tag:tag
         });
 
         return canv;
@@ -1134,6 +1145,7 @@
             wid: 6 - Math.abs(p - 0.5) * 10,
             ang: (a0 + a1) / 2,
             col: "rgba(100,100,100,0.6)",
+            tag: tag
           });
         } else {
           canv += bark(
@@ -1141,6 +1153,7 @@
             ny + y,
             5 - Math.abs(p - 0.5) * 10,
             (a0 + a1) / 2,
+            tag
           );
         }
 
@@ -1159,6 +1172,7 @@
                 len: 4 + 6 * Math.random(),
                 ang: a0 + Math.PI / 2,
                 col: "rgba(100,100,100,0.6)",
+                tag: tag
               },
             );
           }
@@ -1186,7 +1200,7 @@
           rglist[i].map(function(v) {
             return [v[0] + x, v[1] + y];
           }),
-          { wid: 1.5, col: "rgba(100,100,100,0.7)", out: 0 },
+          { wid: 1.5, col: "rgba(100,100,100,0.7)", out: 0, tag:tag },
         );
       }
       return canv;
@@ -1198,13 +1212,14 @@
       var wid = args.wid != undefined ? args.wid : 6;
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree04";
 
       var canv = "";
       var txcanv = "";
       var twcanv = "";
 
-      var trlist = branch({ hei: hei, wid: wid, ang: -Math.PI / 2 });
-      txcanv += barkify(x, y, trlist);
+      var trlist = branch({ hei: hei, wid: wid, ang: -Math.PI / 2, tag:tag });
+      txcanv += barkify(x, y, trlist, tag);
       trlist = trlist[0].concat(trlist[1].reverse());
 
       var trmlist = [];
@@ -1221,6 +1236,7 @@
             hei: hei * (Math.random() + 1) * 0.3,
             wid: wid * 0.5,
             ang: ba,
+            tag: tag
           });
 
           brlist[0].splice(0, 1);
@@ -1228,7 +1244,7 @@
           var foff = function(v) {
             return [v[0] + trlist[i][0], v[1] + trlist[i][1]];
           };
-          txcanv += barkify(x, y, [brlist[0].map(foff), brlist[1].map(foff)]);
+          txcanv += barkify(x, y, [brlist[0].map(foff), brlist[1].map(foff)], tag);
 
           for (var j = 0; j < brlist[0].length; j++) {
             if (Math.random() < 0.2 || j == brlist[0].length - 1) {
@@ -1241,6 +1257,7 @@
                   ang: ba > -Math.PI / 2 ? ba : ba + Math.PI,
                   sca: (0.5 * hei) / 300,
                   dir: ba > -Math.PI / 2 ? 1 : -1,
+                  tag: tag
                 },
               );
             }
@@ -1255,7 +1272,7 @@
           trmlist.push(trlist[i]);
         }
       }
-      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree04" });
+      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:tag });
 
       trmlist.splice(0, 1);
       trmlist.splice(trmlist.length - 1, 1);
@@ -1272,6 +1289,7 @@
           },
           noi: 0.9,
           out: 0,
+          tag: tag
         },
       );
 
@@ -1286,13 +1304,14 @@
       var wid = args.wid != undefined ? args.wid : 5;
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree05"
 
       var canv = "";
       var txcanv = "";
       var twcanv = "";
 
-      var trlist = branch({ hei: hei, wid: wid, ang: -Math.PI / 2, ben: 0 });
-      txcanv += barkify(x, y, trlist);
+      var trlist = branch({ hei: hei, wid: wid, ang: -Math.PI / 2, ben: 0, tag:tag });
+      txcanv += barkify(x, y, trlist, tag);
       trlist = trlist[0].concat(trlist[1].reverse());
 
       var trmlist = [];
@@ -1314,6 +1333,7 @@
             wid: wid * 0.5,
             ang: ba,
             ben: 0.5,
+            tag: tag
           });
 
           brlist[0].splice(0, 1);
@@ -1335,6 +1355,7 @@
                   sca: (0.2 * hei) / 300,
                   dir: ba > -Math.PI / 2 ? 1 : -1,
                   lea: [true, 5],
+                  tag: tag
                 },
               );
             }
@@ -1350,7 +1371,7 @@
         }
       }
 
-      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree05" });
+      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:tag });
 
       trmlist.splice(0, 1);
       trmlist.splice(trmlist.length - 1, 1);
@@ -1367,6 +1388,7 @@
           },
           noi: 0.9,
           out: 0,
+          tag: tag
         },
       );
 
@@ -1381,6 +1403,7 @@
       var wid = args.wid != undefined ? args.wid : 6;
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree06";
 
       var canv = "";
       var txcanv = "";
@@ -1392,6 +1415,7 @@
         var wid = args.wid != undefined ? args.wid : 5;
         var ang = args.ang != undefined ? args.ang : 0;
         var ben = args.ben != undefined ? args.ben : Math.PI * 0.2;
+        var tag = args.tag != undefined ? args.tag : "fracTree";
 
         var trlist = branch({
           hei: hei,
@@ -1399,8 +1423,9 @@
           ang: ang,
           ben: ben,
           det: hei / 20,
+          tag: tag
         });
-        txcanv += barkify(xoff, yoff, trlist);
+        txcanv += barkify(xoff, yoff, trlist, tag);
         trlist = trlist[0].concat(trlist[1].reverse());
 
         var trmlist = [];
@@ -1428,6 +1453,7 @@
                 wid: wid * 0.6,
                 ang: ang + ba,
                 ben: 0.55,
+                tag: tag
               },
             );
 
@@ -1442,6 +1468,7 @@
                     sca: 0.3,
                     dir: ba > 0 ? 1 : -1,
                     lea: [false, 0],
+                    tag: tag
                   },
                 );
               }
@@ -1464,9 +1491,10 @@
         wid: wid,
         ang: -Math.PI / 2,
         ben: 0,
+        tag: tag
       });
 
-      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree06" });
+      canv += poly(trmlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:tag });
 
       trmlist.splice(0, 1);
       trmlist.splice(trmlist.length - 1, 1);
@@ -1483,6 +1511,7 @@
           },
           noi: 0.9,
           out: 0,
+          tag: tag
         },
       );
 
@@ -1503,6 +1532,7 @@
             };
       var col = args.col != undefined ? args.col : "rgba(100,100,100,1)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree07";
 
       reso = 10;
       var nslist = [];
@@ -1550,6 +1580,7 @@
                     : 2.75 * (x - 2) * Math.pow(x - 1, 1 / 1.8);
                 },
                 ret: 1,
+                tag: tag
               },
             );
 
@@ -1578,7 +1609,7 @@
         var m = PolyTools.midPt(T[k]);
         var c = (Noise.noise(m[0] * 0.02, m[1] * 0.02) * 200 + 50) | 0;
         var co = "rgba(" + c + "," + c + "," + c + ",0.8)";
-        canv += poly(T[k], { fil: co, str: co, wid: 0, tag:"tree07" });
+        canv += poly(T[k], { fil: co, str: co, wid: 0, tag:tag });
       }
       return canv;
     };
@@ -1589,6 +1620,7 @@
       var wid = args.wid != undefined ? args.wid : 1;
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
+      var tag = args.tag != undefined ? args.tag : "tree08";
 
       var canv = "";
       var txcanv = "";
@@ -1602,6 +1634,7 @@
         ang: -Math.PI / 2 + ang,
         ben: Math.PI * 0.2,
         det: hei / 20,
+        tag: tag
       });
       //txcanv += barkify(x,y,trlist)
 
@@ -1612,6 +1645,7 @@
         var ang = args.ang != undefined ? args.ang : -Math.PI / 2;
         var len = args.len != undefined ? args.len : 15;
         var ben = args.ben != undefined ? args.ben : 0;
+        var tag = args.tag != undefined ? args.tag : "fracTree";
 
         var fun =
           dep == 0
@@ -1652,6 +1686,7 @@
           fun: fun,
           wid: 0.8,
           col: "rgba(100,100,100,0.5)",
+          tag: tag
         });
         if (dep != 0) {
           var nben = ben + randChoice([-1, 1]) * Math.PI * 0.001 * dep * dep;
@@ -1665,6 +1700,7 @@
                   0.2,
               len: len * normRand(0.8, 0.9),
               ben: nben,
+              tag: tag
             });
             tcanv += fracTree(ept[0], ept[1], dep - 1, {
               ang:
@@ -1675,12 +1711,14 @@
                   0.2,
               len: len * normRand(0.8, 0.9),
               ben: nben,
+              tag: tag
             });
           } else {
             tcanv += fracTree(ept[0], ept[1], dep - 1, {
               ang: ang + ben,
               len: len * normRand(0.8, 0.9),
               ben: nben,
+              tag: tag
             });
           }
         }
@@ -1693,17 +1731,18 @@
             x + trlist[i][0],
             y + trlist[i][1],
             Math.floor(4 * Math.random()),
-            { hei: 20, ang: -Math.PI / 2 - ang * Math.random() },
+            { hei: 20, ang: -Math.PI / 2 - ang * Math.random(), tag: tag },
           );
         } else if (i == Math.floor(trlist.length / 2)) {
           twcanv += fracTree(x + trlist[i][0], y + trlist[i][1], 3, {
             hei: 25,
             ang: -Math.PI / 2 + ang,
+            tag: tag
           });
         }
       }
 
-      canv += poly(trlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:"tree08" });
+      canv += poly(trlist, { xof: x, yof: y, fil: "white", str: col, wid: 0, tag:tag });
 
       canv += stroke(
         trlist.map(function(v) {
@@ -1718,6 +1757,7 @@
           },
           noi: 0.9,
           out: 0,
+          tag: tag
         },
       );
 
@@ -1734,6 +1774,7 @@
       var xof = args.xof != undefined ? args.xof : 0;
       var yof = args.yof != undefined ? args.yof : 0;
       var ret = args.ret != undefined ? args.ret : 0;
+      var tag = args.tag != undefined ? args.tag : "foot";
 
       var ftlist = [];
       var span = 10;
@@ -1786,7 +1827,7 @@
           yof: yof,
           fil: "white",
           str: "none",
-          tag: "mount.foot"
+          tag: tag
         });
       }
       for (var j = 0; j < ftlist.length; j++) {
@@ -1800,6 +1841,7 @@
               (0.1 + Math.random() * 0.1).toFixed(3) +
               ")",
             wid: 1,
+            tag: tag
           },
         );
       }
@@ -1814,6 +1856,7 @@
       var veg = args.veg != undefined ? args.veg : true;
       var ret = args.ret != undefined ? args.ret : 0;
       var col = args.col != undefined ? args.col : undefined;
+      var tag = args.tag != undefined ? args.tag : "mountain";
 
       seed = seed != undefined ? seed : 0;
 
@@ -1864,6 +1907,7 @@
               (Noise.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5).toFixed(3) +
               ")",
             clu: 2,
+            tag: tag
           });
         },
         function(i, j) {
@@ -1883,23 +1927,24 @@
         yof: yoff,
         fil: "white",
         str: "none",
-        tag: "mountain"
+        tag: tag
       });
       //OUTLINE
       canv += stroke(
         ptlist[0].map(function(x) {
           return [x[0] + xoff, x[1] + yoff];
         }),
-        { col: "rgba(100,100,100,0.3)", noi: 1, wid: 3 },
+        { col: "rgba(100,100,100,0.3)", noi: 1, wid: 3, tag: tag },
       );
 
-      canv += foot(ptlist, { xof: xoff, yof: yoff });
+      canv += foot(ptlist, { xof: xoff, yof: yoff, tag: tag });
       canv += texture(ptlist, {
         xof: xoff,
         yof: yoff,
         tex: tex,
         sha: randChoice([0, 0, 0, 0, 5]),
         col: col,
+        tag: tag
       });
 
       //TOP
@@ -1910,6 +1955,7 @@
               "rgba(100,100,100," +
               (Noise.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.5).toFixed(3) +
               ")",
+            tag: tag
           });
         },
         function(i, j) {
@@ -1934,6 +1980,7 @@
                 "rgba(100,100,100," +
                 (Noise.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3).toFixed(3) +
                 ")",
+              tag: tag
             });
           },
           function(i, j) {
@@ -1979,6 +2026,7 @@
                 "rgba(100,100,100," +
                 (Noise.noise(0.01 * x, 0.01 * y) * 0.5 * 0.3 + 0.3).toFixed(3) +
                 ")",
+              tag: tag
             });
           },
           function(i, j) {
@@ -2003,10 +2051,12 @@
               sto: randChoice([1, 2, 2, 3]),
               rot: Math.random(),
               sty: randChoice([1, 2, 3]),
+              tag: tag
             });
           } else if (tt == 2) {
             return Arch.arch04(x + xoff, y + yoff, seed, {
               sto: randChoice([1, 1, 1, 2, 2]),
+              tag: tag
             });
           } else {
             return "";
@@ -2030,6 +2080,7 @@
           return Arch.arch03(x + xoff, y + yoff, seed, {
             sto: randChoice([5, 7]),
             wid: 40 + Math.random() * 20,
+            tag: tag
           });
         },
         function(i, j) {
@@ -2047,7 +2098,7 @@
       //TRANSM
       vegetate(
         function(x, y) {
-          return Arch.transmissionTower01(x + xoff, y + yoff, seed);
+          return Arch.transmissionTower01(x + xoff, y + yoff, seed, {tag:tag});
         },
         function(i, j) {
           var ns = Noise.noise(i * 0.2, j * 0.05, seed + 20 * Math.PI);
@@ -2069,6 +2120,7 @@
             wid: 20 + Math.random() * 20,
             hei: 20 + Math.random() * 20,
             sha: 2,
+            tag: tag
           });
         },
         function(i, j) {
@@ -2093,6 +2145,7 @@
       var tex = args.tex != undefined ? args.tex : 80;
       var cho = args.cho != undefined ? args.cho : 0.5;
       var ret = args.ret != undefined ? args.ret : 0;
+      var tag = args.tag != undefined ? args.tag : "flatMount";
 
       seed = seed != undefined ? seed : 0;
 
@@ -2136,14 +2189,14 @@
         yof: yoff,
         fil: "white",
         str: "none",
-        tag: "flatMount"
+        tag: tag
       });
       //OUTLINE
       canv += stroke(
         ptlist[0].map(function(x) {
           return [x[0] + xoff, x[1] + yoff];
         }),
-        { col: "rgba(100,100,100,0.3)", noi: 1, wid: 3 },
+        { col: "rgba(100,100,100,0.3)", noi: 1, wid: 3, tag:tag },
       );
 
       //canv += foot(ptlist,{xof:xoff,yof:yoff})
@@ -2152,6 +2205,7 @@
         yof: yoff,
         tex: tex,
         wid: 2,
+        tag: tag,
         dis: function() {
           if (Math.random() > 0.5) {
             return 0.1 + 0.4 * Math.random();
@@ -2195,21 +2249,22 @@
         var v = (1 - Math.abs((i % d) - d / 2) / (d / 2)) * 0.12;
         grlist[i][0] *= 1 - v + Noise.noise(grlist[i][1] * 0.5) * v;
       }
-      /*       for (var i = 0; i < ptlist.length; i++){
-        canv += poly(ptlist[i],{xof:xoff,yof:yoff,str:"red",fil:"none",wid:2})
-      }
- */
+      //        for (var i = 0; i < ptlist.length; i++){
+      //   canv += poly(ptlist[i],{xof:xoff,yof:yoff,str:"red",fil:"none",wid:2})
+      // }
+ 
       canv += poly(grlist, {
         xof: xoff,
         yof: yoff,
         str: "none",
         fil: "white",
         wid: 2,
-        tag: "flatMount"
+        tag: tag
       });
       canv += stroke(grlist.map(x => [x[0] + xoff, x[1] + yoff]), {
         wid: 3,
         col: "rgba(100,100,100,0.2)",
+        tag: tag
       });
 
       var bound = function(plist) {
@@ -2234,12 +2289,12 @@
         return { xmin: xmin, xmax: xmax, ymin: ymin, ymax: ymax };
       };
 
-      canv += this.flatDec(xoff, yoff, bound(grlist));
+      canv += this.flatDec(xoff, yoff, bound(grlist), tag);
 
       return canv;
     };
 
-    this.flatDec = function(xoff, yoff, grbd) {
+    this.flatDec = function(xoff, yoff, grbd, tag) {
       var canv = "";
 
       var tt = randChoice([0, 0, 1, 2, 3, 4]);
@@ -2253,6 +2308,7 @@
             wid: 10 + Math.random() * 20,
             hei: 10 + Math.random() * 20,
             sha: 2,
+            tag: tag
           },
         );
       }
@@ -2263,7 +2319,7 @@
           canv += Tree.tree08(
             xr + Math.min(Math.max(normRand(-30, 30), grbd.xmin), grbd.xmax),
             yr,
-            { hei: 60 + Math.random() * 40 },
+            { hei: 60 + Math.random() * 40, tag: tag },
           );
         }
       }
@@ -2278,6 +2334,7 @@
               wid: 50 + Math.random() * 20,
               hei: 40 + Math.random() * 20,
               sha: 5,
+              tag: tag
             },
           );
         }
@@ -2291,7 +2348,7 @@
           canv += Tree.tree05(
             xoff + i + 20 * normRand(-1, 1),
             yoff + (grbd.ymin + grbd.ymax) / 2 + 20,
-            { hei: 100 + Math.random() * 200 },
+            { hei: 100 + Math.random() * 200, tag:tag },
           );
         }
         for (var j = 0; j < Math.random() * 4; j++) {
@@ -2303,6 +2360,7 @@
               wid: 50 + Math.random() * 20,
               hei: 40 + Math.random() * 20,
               sha: 5,
+              tag: tag
             },
           );
         }
@@ -2310,7 +2368,7 @@
         for (var i = 0; i < randChoice([1, 1, 1, 1, 2, 2, 3]); i++) {
           var xr = normRand(grbd.xmin, grbd.xmax);
           var yr = (grbd.ymin + grbd.ymax) / 2;
-          canv += Tree.tree04(xoff + xr, yoff + yr + 20, {});
+          canv += Tree.tree04(xoff + xr, yoff + yr + 20, {tag:tag});
           for (var j = 0; j < Math.random() * 2; j++) {
             canv += Mount.rock(
               xoff +
@@ -2324,6 +2382,7 @@
                 wid: 50 + Math.random() * 20,
                 hei: 40 + Math.random() * 20,
                 sha: 5,
+                tag: tag
               },
             );
           }
@@ -2333,7 +2392,7 @@
           canv += Tree.tree06(
             xoff + normRand(grbd.xmin, grbd.xmax),
             yoff + (grbd.ymin + grbd.ymax) / 2,
-            { hei: 60 + Math.random() * 60 },
+            { hei: 60 + Math.random() * 60, tag: tag },
           );
         }
       } else if (tt == 4) {
@@ -2345,7 +2404,7 @@
           canv += Tree.tree07(
             xoff + i + 20 * normRand(-1, 1),
             yoff + (grbd.ymin + grbd.ymax) / 2 + normRand(-1, 1) + 0,
-            { hei: normRand(40, 80) },
+            { hei: normRand(40, 80), tag: tag },
           );
         }
       }
@@ -2354,6 +2413,7 @@
         canv += Tree.tree02(
           xoff + normRand(grbd.xmin, grbd.xmax),
           yoff + normRand(grbd.ymin, grbd.ymax),
+          {tag: tag}
         );
       }
 
@@ -2367,6 +2427,7 @@
             wid: normRand(160, 200),
             hei: normRand(80, 100),
             per: Math.random(),
+            tag: tag
           },
         );
       }
@@ -2379,6 +2440,7 @@
       var hei = args.hei != undefined ? args.hei : 300;
       var len = args.len != undefined ? args.len : 2000;
       var seg = args.seg != undefined ? args.seg : 5;
+      var tag = args.tag != undefined ? args.tag : "distMount";
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -2422,7 +2484,7 @@
           fil: getCol(...ptlist[i][ptlist[i].length - 1]),
           str: "none",
           wid: 1,
-          tag: "distMount"
+          tag: tag
         });
 
         var T = PolyTools.triangulate(ptlist[i], {
@@ -2433,7 +2495,7 @@
         for (var k = 0; k < T.length; k++) {
           var m = PolyTools.midPt(T[k]);
           var co = getCol(m[0], m[1]);
-          canv += poly(T[k], { fil: co, str: co, wid: 1, tag:"distMount" });
+          canv += poly(T[k], { fil: co, str: co, wid: 1, tag:tag });
         }
       }
       return canv;
@@ -2446,6 +2508,7 @@
       var tex = args.tex != undefined ? args.tex : 40;
       var ret = args.ret != undefined ? args.ret : 0;
       var sha = args.sha != undefined ? args.sha : 10;
+      var tag = args.tag != undefined ? args.tag : "rock";
 
       seed = seed != undefined ? seed : 0;
 
@@ -2496,14 +2559,14 @@
         yof: yoff,
         fil: "white",
         str: "none",
-        tag: "rock"
+        tag: tag
       });
       //OUTLINE
       canv += stroke(
         ptlist[0].map(function(x) {
           return [x[0] + xoff, x[1] + yoff];
         }),
-        { col: "rgba(100,100,100,0.3)", noi: 1, wid: 3 },
+        { col: "rgba(100,100,100,0.3)", noi: 1, wid: 3, tag: tag },
       );
       canv += texture(ptlist, {
         xof: xoff,
@@ -2511,6 +2574,7 @@
         tex: tex,
         wid: 3,
         sha: sha,
+        tag: tag,
         col: function(x) {
           return (
             "rgba(180,180,180," + (0.3 + Math.random() * 0.3).toFixed(3) + ")"
@@ -2554,6 +2618,7 @@
       var hei = args.hei != undefined ? args.hei : 40;
       var wid = args.wid != undefined ? args.wid : 180;
       var tex = args.tex != undefined ? args.tex : 300;
+      var tag = args.tag != undefined ? args.tag : "hut";
 
       var reso = [10, 10];
       var ptlist = [];
@@ -2573,7 +2638,7 @@
         ptlist[0]
           .slice(0, -1)
           .concat(ptlist[ptlist.length - 1].slice(0, -1).reverse()),
-        { xof: xoff, yof: yoff, fil: "white", str: "none", tag:"arch.hut.0" },
+        { xof: xoff, yof: yoff, fil: "white", str: "none", tag:tag },
       );
       canv += poly(ptlist[0], {
         xof: xoff,
@@ -2581,7 +2646,7 @@
         fil: "none",
         str: "rgba(100,100,100,0.3)",
         wid: 2,
-        tag:"arch.hut.1"
+        tag:tag
       });
       canv += poly(ptlist[ptlist.length - 1], {
         xof: xoff,
@@ -2589,7 +2654,7 @@
         fil: "none",
         str: "rgba(100,100,100,0.3)",
         wid: 2,
-        tag:"arch.hut.2"
+        tag:tag
       });
 
       canv += texture(ptlist, {
@@ -2598,6 +2663,7 @@
         tex: tex,
         wid: 1,
         len: 0.25,
+        tag: tag,
         col: function(x) {
           return (
             "rgba(120,120,120," + (0.3 + Math.random() * 0.3).toFixed(3) + ")"
@@ -2627,6 +2693,7 @@
       var tra = args.tra != undefined ? args.tra : true;
       var bot = args.bot != undefined ? args.bot : true;
       var wei = args.wei != undefined ? args.wei : 3;
+      var tag = args.tag != undefined ? args.tag : "box";
       var dec =
         args.dec != undefined
           ? args.dec
@@ -2677,7 +2744,7 @@
           yof: yoff,
           str: "none",
           fil: "white",
-          tag:"arch.box"
+          tag: tag
         });
       }
 
@@ -2693,6 +2760,7 @@
             fun: function(x) {
               return 1;
             },
+            tag: tag
           },
         );
       }
@@ -2773,6 +2841,7 @@
       var wei = args.wei != undefined ? args.wei : 1;
       var tra = args.tra != undefined ? args.tra : true;
       var fro = args.fro != undefined ? args.fro : true;
+      var tag = args.tag != undefined ? args.tag: "rail";
 
       seed = seed != undefined ? seed : 0;
 
@@ -2828,7 +2897,7 @@
             fil: "none",
             str: "rgba(100,100,100,0.5)",
             wid: 2,
-            tag:"arch.rail"
+            tag:tag
           });
         }
       }
@@ -2845,6 +2914,7 @@
             fun: function(x) {
               return 1;
             },
+            tag: tag
           },
         );
       }
@@ -2860,6 +2930,7 @@
       var cor = args.cor != undefined ? args.cor : 5;
       var wei = args.wei != undefined ? args.wei : 3;
       var pla = args.pla != undefined ? args.pla : [0, ""];
+      var tag = args.tag != undefined ? args.tag : "roof";
 
       var opf = function(ptlist) {
         if (rot < 0.5) {
@@ -2922,7 +2993,7 @@
         [wid * 0.5, 0],
         [mid, per],
       ]);
-      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white", tag:"arch.roof" });
+      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white", tag:tag });
 
       for (var i = 0; i < ptlist.length; i++) {
         canv += stroke(
@@ -2936,6 +3007,7 @@
             fun: function(x) {
               return 1;
             },
+            tag: tag
           },
         );
       }
@@ -2978,6 +3050,7 @@
       var cor = args.cor != undefined ? args.cor : 10;
       var sid = args.sid != undefined ? args.sid : 4;
       var wei = args.wei != undefined ? args.wei : 3;
+      var tag = args.tag != undefined ? args.tag : "pagroof";
 
       var ptlist = [];
       var polist = [[0, -hei]];
@@ -2993,7 +3066,7 @@
         polist.push([fxx, fy]);
       }
 
-      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white", tag: "pagroof" });
+      canv += poly(polist, { xof: xoff, yof: yoff, str: "none", fil: "white", tag: tag });
       for (var i = 0; i < ptlist.length; i++) {
         canv += stroke(
           div(ptlist[i], 5).map(function(x) {
@@ -3006,6 +3079,7 @@
             fun: function(x) {
               return 1;
             },
+            tag: tag
           },
         );
       }
@@ -3019,6 +3093,7 @@
       var wid = args.wid != undefined ? args.wid : 180;
       var rot = args.rot != undefined ? args.rot : 0.7;
       var per = args.per != undefined ? args.per : 5;
+      var tag = args.tag != undefined ? args.tag : "arch01";
 
       seed = seed != undefined ? seed : 0;
 
@@ -3027,12 +3102,13 @@
       var h1 = hei * (1 - p);
 
       var canv = "";
-      canv += hut(xoff, yoff - hei, { hei: h0, wid: wid });
+      canv += hut(xoff, yoff - hei, { hei: h0, wid: wid, tag: tag });
       canv += box(xoff, yoff, {
         hei: h1,
         wid: (wid * 2) / 3,
         per: per,
         bot: false,
+        tag: tag
       });
 
       canv += rail(xoff, yoff, seed, {
@@ -3042,6 +3118,7 @@
         wid: wid,
         per: per * 2,
         seg: (3 + Math.random() * 3) | 0,
+        tag: tag
       });
 
       var mcnt = randChoice([0, 1, 1, 2]);
@@ -3067,6 +3144,7 @@
         wid: wid,
         per: per * 2,
         seg: (3 + Math.random() * 3) | 0,
+        tag: tag
       });
 
       return canv;
@@ -3081,6 +3159,7 @@
       var sto = args.sto != undefined ? args.sto : 3;
       var sty = args.sty != undefined ? args.sty : 1;
       var rai = args.rai != undefined ? args.rai : false;
+      var tag = args.tag != undefined ? args.tag : "arch02";
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -3094,6 +3173,7 @@
           rot: rot,
           wei: 1.5,
           per: per,
+          tag: tag,
           dec: function(a) {
             return deco(
               sty,
@@ -3112,6 +3192,7 @@
               rot: rot,
               wei: 0.5,
               tra: false,
+              tag: tag
             })
           : [];
         var pla = undefined;
@@ -3125,6 +3206,7 @@
           wei: 1.5,
           per: per,
           pla: pla,
+          tag: tag
         });
 
         hoff += hei * 1.5;
@@ -3138,6 +3220,7 @@
       var rot = args.rot != undefined ? args.rot : 0.7;
       var per = args.per != undefined ? args.per : 5;
       var sto = args.sto != undefined ? args.sto : 7;
+      var tag = args.tag != undefined ? args.tag : "arch03";
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -3154,6 +3237,7 @@
           dec: function(a) {
             return deco(1, Object.assign({}, a, { hsp: [1, 4], vsp: [1, 2] }));
           },
+          tag: tag
         });
         canv += rail(xoff, yoff - hoff, i * 0.2, {
           seg: 5,
@@ -3163,6 +3247,7 @@
           rot: rot,
           wei: 0.5,
           tra: false,
+          tag: tag
         });
         canv += pagroof(xoff, yoff - hoff - hei, {
           hei: hei * 1.5,
@@ -3170,6 +3255,7 @@
           rot: rot,
           wei: 1.5,
           per: per,
+          tag: tag
         });
         hoff += hei * 1.5;
       }
@@ -3182,6 +3268,7 @@
       var rot = args.rot != undefined ? args.rot : 0.7;
       var per = args.per != undefined ? args.per : 5;
       var sto = args.sto != undefined ? args.sto : 2;
+      var tag = args.tag != undefined ? args.tag : "arch04";
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -3198,6 +3285,7 @@
           dec: function(a) {
             return [];
           },
+          tag: tag
         });
         canv += rail(xoff, yoff - hoff, i * 0.2, {
           seg: 3,
@@ -3207,6 +3295,7 @@
           rot: rot,
           wei: 0.5,
           tra: true,
+          tag: tag
         });
         canv += pagroof(xoff, yoff - hoff - hei, {
           hei: hei * 1,
@@ -3214,6 +3303,7 @@
           rot: rot,
           wei: 1.5,
           per: per,
+          tag: tag
         });
         hoff += hei * 1.2;
       }
@@ -3225,6 +3315,7 @@
       var len = args.len != undefined ? args.len : 120;
       var sca = args.sca != undefined ? args.sca : 1;
       var fli = args.fli != undefined ? args.fli : false;
+      var tag = args.tag != undefined ? args.tag : "boat01";
       var canv = "";
 
       var dir = fli ? -1 : 1;
@@ -3234,6 +3325,7 @@
         sca: 0.5 * sca,
         fli: !fli,
         len: [0, 30, 20, 30, 10, 30, 30, 30, 30],
+        tag: tag
       });
 
       var plist1 = [];
@@ -3249,13 +3341,14 @@
         plist2.push([i * dir, fun2(i / len)]);
       }
       var plist = plist1.concat(plist2.reverse());
-      canv += poly(plist, { xof: xoff, yof: yoff, fil: "white", tag:"boat01" });
+      canv += poly(plist, { xof: xoff, yof: yoff, fil: "white", tag:tag });
       canv += stroke(plist.map(v => [xoff + v[0], yoff + v[1]]), {
         wid: 1,
         fun: function(x) {
           return Math.sin(x * Math.PI * 2);
         },
         col: "rgba(100,100,100,0.4)",
+        tag: tag
       });
 
       return canv;
@@ -3265,17 +3358,19 @@
       var args = args != undefined ? args : {};
       var hei = args.hei != undefined ? args.hei : 100;
       var wid = args.wid != undefined ? args.wid : 20;
+      var tag = args.tag != undefined ? args.tag : "transmissionTower01";
 
       var canv = "";
       var toGlobal = function(v) {
         return [v[0] + xoff, v[1] + yoff];
       };
 
-      var quickstroke = function(pl) {
+      var quickstroke = function(pl, tag) {
         return stroke(div(pl, 5).map(toGlobal), {
           wid: 1,
           fun: x => 0.5,
           col: "rgba(100,100,100,0.4)",
+          tag: tag
         });
       };
 
@@ -3297,39 +3392,39 @@
         canv += quickstroke([
           [-bch[i][0] * wid, bch[i][1] * hei],
           [bch[i][0] * wid, bch[i][1] * hei],
-        ]);
+        ], tag);
         canv += quickstroke([
           [-bch[i][0] * wid, bch[i][1] * hei],
           [0, (bch[i][1] - 0.05) * hei],
-        ]);
+        ], tag);
         canv += quickstroke([
           [bch[i][0] * wid, bch[i][1] * hei],
           [0, (bch[i][1] - 0.05) * hei],
-        ]);
+        ], tag);
 
         canv += quickstroke([
           [-bch[i][0] * wid, bch[i][1] * hei],
           [-bch[i][0] * wid, (bch[i][1] + 0.1) * hei],
-        ]);
+        ], tag);
         canv += quickstroke([
           [bch[i][0] * wid, bch[i][1] * hei],
           [bch[i][0] * wid, (bch[i][1] + 0.1) * hei],
-        ]);
+        ], tag);
       }
 
       var l10 = div([p00, p10, p20, p30], 5);
       var l11 = div([p01, p11, p21, p31], 5);
 
       for (var i = 0; i < l10.length - 1; i++) {
-        canv += quickstroke([l10[i], l11[i + 1]]);
-        canv += quickstroke([l11[i], l10[i + 1]]);
+        canv += quickstroke([l10[i], l11[i + 1]], tag);
+        canv += quickstroke([l11[i], l10[i + 1]], tag);
       }
 
-      canv += quickstroke([p00, p01]);
-      canv += quickstroke([p10, p11]);
-      canv += quickstroke([p20, p21]);
-      canv += quickstroke([p00, p10, p20, p30]);
-      canv += quickstroke([p01, p11, p21, p31]);
+      canv += quickstroke([p00, p01], tag);
+      canv += quickstroke([p10, p11], tag);
+      canv += quickstroke([p20, p21], tag);
+      canv += quickstroke([p00, p10, p20, p30], tag);
+      canv += quickstroke([p01, p11, p21, p31], tag);
 
       return canv;
     };
@@ -3420,6 +3515,7 @@
     this.hat01 = function(p0, p1, args) {
       var args = args != undefined ? args : {};
       var fli = args.fli != undefined ? args.fli : false;
+      var tag = args.tag != undefined ? args.tag : "hat01";
 
       var canv = "";
       var seed = Math.random();
@@ -3443,7 +3539,7 @@
             [-0.65, 0.5],
           ]),
         ),
-        { fil: "rgba(100,100,100,0.8)", tag:"hat01" },
+        { fil: "rgba(100,100,100,0.8)", tag: tag },
       );
 
       var qlist1 = [];
@@ -3456,7 +3552,7 @@
       canv += poly(tranpoly(p0, p1, f(qlist1)), {
         str: "rgba(100,100,100,0.8)",
         wid: 1,
-        tag: "hat01"
+        tag: tag
       });
 
       return canv;
@@ -3465,6 +3561,7 @@
     this.hat02 = function(p0, p1, args) {
       var args = args != undefined ? args : {};
       var fli = args.fli != undefined ? args.fli : false;
+      var tag = args.tag != undefined ? args.tag : "hat02";
 
       var canv = "";
       var seed = Math.random();
@@ -3494,7 +3591,7 @@
             [0.3, 0.5],
           ]),
         ),
-        { fil: "rgba(100,100,100,0.8)", tag:"hat02" },
+        { fil: "rgba(100,100,100,0.8)", tag:tag },
       );
       return canv;
     };
@@ -3502,6 +3599,7 @@
     this.stick01 = function(p0, p1, args) {
       var args = args != undefined ? args : {};
       var fli = args.fli != undefined ? args.fli : false;
+      var tag = args.tag != undefined ? args.tag : "stick01";
 
       var canv = "";
       var seed = Math.random();
@@ -3522,7 +3620,7 @@
       canv += poly(tranpoly(p0, p1, f(qlist1)), {
         str: "rgba(100,100,100,0.5)",
         wid: 1,
-        tag: "stick01"
+        tag: tag
       });
 
       return canv;
@@ -3539,6 +3637,7 @@
       var args = args != undefined ? args : {};
       var sca = args.sca != undefined ? args.sca : 0.5;
       var hat = args.hat != undefined ? args.hat : Man.hat01;
+      var tag = args.tag != undefined ? args.tag : "man";
       var ite =
         args.ite != undefined
           ? args.ite
@@ -3620,7 +3719,7 @@
         //canv += stroke(s.map(toGlobal))
       }
 
-      var cloth = function(plist, fun) {
+      var cloth = function(plist, fun, tag) {
         var canv = "";
         var tlist = bezmh(plist, 2);
         var [tlist1, tlist2] = expand(tlist, fun);
@@ -3631,10 +3730,12 @@
         canv += stroke(tlist1.map(toGlobal), {
           wid: 1,
           col: "rgba(100,100,100,0.5)",
+          tag: tag
         });
         canv += stroke(tlist2.map(toGlobal), {
           wid: 1,
           col: "rgba(100,100,100,0.6)",
+          tag: tag
         });
 
         return canv;
@@ -3662,10 +3763,10 @@
 
       canv += ite(toGlobal(pts[8]), toGlobal(pts[6]), { fli: fli });
 
-      canv += cloth([pts[1], pts[7], pts[8]], fsleeve);
-      canv += cloth([pts[1], pts[0], pts[3], pts[4]], fbody);
-      canv += cloth([pts[1], pts[5], pts[6]], fsleeve);
-      canv += cloth([pts[1], pts[2]], fhead);
+      canv += cloth([pts[1], pts[7], pts[8]], fsleeve, tag);
+      canv += cloth([pts[1], pts[0], pts[3], pts[4]], fbody, tag);
+      canv += cloth([pts[1], pts[5], pts[6]], fsleeve, tag);
+      canv += cloth([pts[1], pts[2]], fhead, tag);
 
       var hlist = bezmh([pts[1], pts[2]], 2);
       var [hlist1, hlist2] = expand(hlist, fhead);
@@ -3673,10 +3774,10 @@
       hlist2.splice(0, Math.floor(hlist2.length * 0.95));
       canv += poly(hlist1.concat(hlist2.reverse()).map(toGlobal), {
         fil: "rgba(100,100,100,0.6)",
-        tag: "man.cloth"
+        tag: tag
       });
 
-      canv += hat(toGlobal(pts[1]), toGlobal(pts[2]), { fli: fli });
+      canv += hat(toGlobal(pts[1]), toGlobal(pts[2]), { fli: fli, tag: tag });
 
       return canv;
     };
@@ -3687,6 +3788,7 @@
     var hei = args.hei != undefined ? args.hei : 2;
     var len = args.len != undefined ? args.len : 800;
     var clu = args.clu != undefined ? args.clu : 10;
+    var tag = args.tag != undefined ? args.tag : "water";
     var canv = "";
 
     var ptlist = [];
@@ -3714,6 +3816,7 @@
           col:
             "rgba(100,100,100," + (0.3 + Math.random() * 0.3).toFixed(3) + ")",
           wid: 1,
+          tag: tag
         },
       );
     }
@@ -3909,14 +4012,14 @@
             tag: plan[i].tag,
             x: plan[i].x,
             y: plan[i].y,
-            canv: Mount.mountain(plan[i].x, plan[i].y, i * 2 * Math.random()),
+            canv: Mount.mountain(plan[i].x, plan[i].y, i * 2 * Math.random(), {tag:"mount"+i}),
             //{col:function(x){return "rgba(100,100,100,"+(0.5*Math.random()*plan[i].y/MEM.windy)+")"}}),
           });
           add({
             tag: plan[i].tag,
             x: plan[i].x,
             y: plan[i].y - 10000,
-            canv: water(plan[i].x, plan[i].y, i * 2),
+            canv: water(plan[i].x, plan[i].y, i * 2, {tag:"water"+i}),
           });
         } else if (plan[i].tag == "flatmount") {
           add({
@@ -3931,6 +4034,7 @@
                 wid: 600 + Math.random() * 400,
                 hei: 100,
                 cho: 0.5 + Math.random() * 0.2,
+                tag: "flatMount"+i
               },
             ),
           });
@@ -3942,6 +4046,7 @@
             canv: Mount.distMount(plan[i].x, plan[i].y, Math.random() * 100, {
               hei: 150,
               len: randChoice([500, 1000, 1500]),
+              tag: "distMount"+i
             }),
           });
         } else if (plan[i].tag == "boat") {
@@ -3952,6 +4057,7 @@
             canv: Arch.boat01(plan[i].x, plan[i].y, Math.random(), {
               sca: plan[i].y / 800,
               fli: randChoice([true, false]),
+              tag: "boat"+i
             }),
           });
         } else if (plan[i].tag == "redcirc") {
