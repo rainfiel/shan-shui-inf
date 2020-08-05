@@ -3945,7 +3945,7 @@
     cwid: 512,
     cursx: 0,
     lasttick: 0,
-    windx: 3000,
+    windx: 15000,
     windy: 800,
     planmtx: [],
     ids: []
@@ -4122,6 +4122,8 @@
         MEM.chunks[i].x +
         "' y='" +
         MEM.chunks[i].y +
+        "' tag='" +
+        MEM.chunks[i].tag +
         "' transform='translate(0,0)'>"
         + MEM.chunks[i].canv
         + "</g>";
