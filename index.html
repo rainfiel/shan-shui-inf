@@ -747,6 +747,11 @@
     return ret ? texlist : canv;
   };
 
+  var _treeid = 0
+  function treeid() {
+    _treeid++;
+    return _treeid;
+  }
   var Tree = new function() {
     this.tree01 = function(x, y, args) {
       var args = args != undefined ? args : {};
@@ -755,6 +760,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree01";
+      tag = tag +".tree01."+treeid();
 
       reso = 10;
       var nslist = [];
@@ -817,6 +823,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree02";
+      tag = tag +".tree02."+treeid();
 
       var leafcol;
       if (col.includes("rgba(")) {
@@ -863,6 +870,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree03";
+      tag = tag +".tree03."+treeid();
 
       reso = 10;
       var nslist = [];
@@ -1216,6 +1224,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree04";
+      tag = tag +".tree04."+treeid();
 
       var canv = "";
       var txcanv = "";
@@ -1308,6 +1317,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree05"
+      tag = tag +".tree05."+treeid();
 
       var canv = "";
       var txcanv = "";
@@ -1407,6 +1417,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree06";
+      tag = tag +".tree06."+treeid();
 
       var canv = "";
       var txcanv = "";
@@ -1536,6 +1547,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,1)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree07";
+      tag = tag +".tree07."+treeid();
 
       reso = 10;
       var nslist = [];
@@ -1624,6 +1636,7 @@
       var col = args.col != undefined ? args.col : "rgba(100,100,100,0.5)";
       var noi = args.noi != undefined ? args.noi : 0.5;
       var tag = args.tag != undefined ? args.tag : "tree08";
+      tag = tag +".tree08."+treeid();
 
       var canv = "";
       var txcanv = "";
@@ -3945,7 +3958,7 @@
     cwid: 512,
     cursx: 0,
     lasttick: 0,
-    windx: 15000,
+    windx: 2000,
     windy: 800,
     planmtx: [],
     ids: []
