@@ -747,11 +747,28 @@
     return ret ? texlist : canv;
   };
 
-  var _treeid = 0
+  var _treeid = 0;
   function treeid() {
     _treeid++;
     return _treeid;
   }
+  var _rockid = 0;
+  function rockid() {
+    _rockid++;
+    return _rockid;
+  }
+  var _archid = 0;
+  function archid() {
+    _archid++;
+    return _archid;
+  }
+  var _manid = 0;
+  function manid() {
+    _manid++;
+    return _manid;
+  }
+
+
   var Tree = new function() {
     this.tree01 = function(x, y, args) {
       var args = args != undefined ? args : {};
@@ -2525,6 +2542,7 @@
       var ret = args.ret != undefined ? args.ret : 0;
       var sha = args.sha != undefined ? args.sha : 10;
       var tag = args.tag != undefined ? args.tag : "rock";
+      tag = tag + ".rock." + rockid();
 
       seed = seed != undefined ? seed : 0;
 
@@ -2611,6 +2629,7 @@
       return canv;
     };
   }();
+
 
   var Arch = new function() {
     var flip = function(ptlist, axis) {
@@ -3110,6 +3129,7 @@
       var rot = args.rot != undefined ? args.rot : 0.7;
       var per = args.per != undefined ? args.per : 5;
       var tag = args.tag != undefined ? args.tag : "arch01";
+      tag = tag + ".arch01." + archid();
 
       seed = seed != undefined ? seed : 0;
 
@@ -3142,15 +3162,18 @@
         canv += Man.man(xoff + normRand(-wid / 3, wid / 3), yoff, {
           fli: randChoice([true, false]),
           sca: 0.42,
+          tag: tag
         });
       } else if (mcnt == 2) {
         canv += Man.man(xoff + normRand(-wid / 4, -wid / 5), yoff, {
           fli: false,
           sca: 0.42,
+          tag: tag
         });
         canv += Man.man(xoff + normRand(wid / 5, wid / 4), yoff, {
           fli: true,
           sca: 0.42,
+          tag: tag
         });
       }
       canv += rail(xoff, yoff, seed, {
@@ -3176,6 +3199,7 @@
       var sty = args.sty != undefined ? args.sty : 1;
       var rai = args.rai != undefined ? args.rai : false;
       var tag = args.tag != undefined ? args.tag : "arch02";
+      tag = tag + ".arch02." + archid();
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -3237,6 +3261,7 @@
       var per = args.per != undefined ? args.per : 5;
       var sto = args.sto != undefined ? args.sto : 7;
       var tag = args.tag != undefined ? args.tag : "arch03";
+      tag = tag + ".arch03." + archid();
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -3285,6 +3310,7 @@
       var per = args.per != undefined ? args.per : 5;
       var sto = args.sto != undefined ? args.sto : 2;
       var tag = args.tag != undefined ? args.tag : "arch04";
+      tag = tag + ".arch04." + archid();
 
       seed = seed != undefined ? seed : 0;
       var canv = "";
@@ -3654,6 +3680,8 @@
       var sca = args.sca != undefined ? args.sca : 0.5;
       var hat = args.hat != undefined ? args.hat : Man.hat01;
       var tag = args.tag != undefined ? args.tag : "man";
+      // tag = tag + ".man." + manid();
+
       var ite =
         args.ite != undefined
           ? args.ite
@@ -3741,7 +3769,7 @@
         var [tlist1, tlist2] = expand(tlist, fun);
         canv += poly(tlist1.concat(tlist2.reverse()).map(toGlobal), {
           fil: "white",
-          tag: "man"
+          tag: tag
         });
         canv += stroke(tlist1.map(toGlobal), {
           wid: 1,
