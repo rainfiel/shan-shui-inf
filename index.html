@@ -3831,16 +3831,18 @@
     var args = args != undefined ? args : {};
     var hei = args.hei != undefined ? args.hei : 2;
     var len = args.len != undefined ? args.len : 800;
-    var clu = args.clu != undefined ? args.clu : 10;
+    var clu = args.clu != undefined ? args.clu : 7;
     var tag = args.tag != undefined ? args.tag : "water";
     var canv = "";
 
     var ptlist = [];
+    var ptlist2 = [];
     var yk = 0;
     for (var i = 0; i < clu; i++) {
       ptlist.push([]);
+      ptlist2.push([]);
       var xk = (Math.random() - 0.5) * (len / 8);
-      yk += Math.random() * 5;
+      yk += Math.random() * 4 + 1;
       var lk = len / 4 + Math.random() * (len / 4);
       var reso = 5;
       for (var j = -lk; j < lk; j += reso) {
@@ -3848,19 +3850,38 @@
           j + xk,
           Math.sin(j * 0.2) * hei * Noise.noise(j * 0.1) - 20 + yk,
         ]);
+        ptlist2[ptlist2.length - 1].push([
+          j + xk,
+          -Math.sin(j * 0.2) * hei * Noise.noise(j * 0.1) - 20 + yk,
+        ]);
       }
     }
 
+    var colors = [];
     for (var j = 1; j < ptlist.length; j += 1) {
+      var color = "rgba(100,100,100," + (0.3 + Math.random() * 0.3).toFixed(3) + ")";
+      colors.push(color)
       canv += stroke(
         ptlist[j].map(function(x) {
           return [x[0] + xoff, x[1] + yoff];
         }),
         {
-          col:
-            "rgba(100,100,100," + (0.3 + Math.random() * 0.3).toFixed(3) + ")",
+          col: color,
           wid: 1,
           tag: tag
+        },
+      );
+    }
+
+    for (var j = 1; j < ptlist2.length; j += 1) {
+      canv += stroke(
+        ptlist2[j].map(function(x) {
+          return [x[0] + xoff, x[1] + yoff];
+        }),
+        {
+          col: colors[j],
+          wid: 1,
+          tag: tag+".water.1" //water_id.water.1
         },
       );
     }
@@ -3986,7 +4007,7 @@
     cwid: 512,
     cursx: 0,
     lasttick: 0,
-    windx: 2000,
+    windx: 3000,
     windy: 800,
     planmtx: [],
     ids: []
@@ -4068,7 +4089,7 @@
             tag: plan[i].tag,
             x: plan[i].x,
             y: plan[i].y - 10000,
-            canv: water(plan[i].x, plan[i].y, i * 2, {tag:tag}),
+            canv: water(plan[i].x, plan[i].y, i * 2, {tag:"water_"+id}),
           });
         } else if (plan[i].tag == "flatmount") {
           var tag = "flatMount_"+id;
@@ -4523,31 +4544,31 @@
     </tr>
   </table>
 </body>
-<!-- 
+
 <canvas id="bgcanv" width="512" height="512" hidden> </canvas>
 <script>
-  var canvas = document.getElementById("bgcanv");
-  var ctx = canvas.getContext("2d");
-  var reso = 512;
+  // var canvas = document.getElementById("bgcanv");
+  // var ctx = canvas.getContext("2d");
+  // var reso = 512;
 
-  for (var i = 0; i < reso / 2 + 1; i++) {
-    for (var j = 0; j < reso / 2 + 1; j++) {
-      var c = 245 + Noise.noise(i * 0.1, j * 0.1) * 10;
-      c -= Math.random() * 20;
+  // for (var i = 0; i < reso / 2 + 1; i++) {
+  //   for (var j = 0; j < reso / 2 + 1; j++) {
+  //     var c = 245 + Noise.noise(i * 0.1, j * 0.1) * 10;
+  //     c -= Math.random() * 20;
 
-      var r = c.toFixed(0);
-      var g = (c * 0.95).toFixed(0);
-      var b = (c * 0.85).toFixed(0);
-      ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-      ctx.fillRect(i, j, 1, 1);
-      ctx.fillRect(reso - i, j, 1, 1);
-      ctx.fillRect(i, reso - j, 1, 1);
-      ctx.fillRect(reso - i, reso - j, 1, 1);
-    }
-  }
-  var img = canvas.toDataURL("image/png");
-  document.getElementById("BG").style.backgroundImage = "url(" + img + ")";
-  document.getElementsByTagName("body")[0].style.backgroundImage =
-    "url(" + img + ")";
+  //     var r = c.toFixed(0);
+  //     var g = (c * 0.95).toFixed(0);
+  //     var b = (c * 0.85).toFixed(0);
+  //     ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+  //     ctx.fillRect(i, j, 1, 1);
+  //     ctx.fillRect(reso - i, j, 1, 1);
+  //     ctx.fillRect(i, reso - j, 1, 1);
+  //     ctx.fillRect(reso - i, reso - j, 1, 1);
+  //   }
+  // }
+  // var img = canvas.toDataURL("image/png");
+  // document.getElementById("BG").style.backgroundImage = "url(" + img + ")";
+  // document.getElementsByTagName("body")[0].style.backgroundImage =
+  //   "url(" + img + ")";
 </script>
- -->
+ 
